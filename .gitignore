@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+.env
+outputs/
+*.log
+*.sqlite3
+dist/
+build/
+*.spec
