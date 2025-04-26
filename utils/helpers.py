@@ -1,5 +1,3 @@
-# utils/helpers.py
-
 import re
 from bs4 import BeautifulSoup
 

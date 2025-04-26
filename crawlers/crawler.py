@@ -1,4 +1,3 @@
-# crawler.py
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
@@ -22,11 +21,9 @@ def get_links_from_url(base_url, max_links=3):
         links = set()
         base_domain = urlparse(base_url).netloc
 
-        # Limit to content within the same article or related sections
         for a_tag in soup.find_all("a", href=True):
             href = a_tag.get("href")
             full_url = urljoin(base_url, href)
-            # Only follow links within the same Wikipedia article or its subsections
             if is_valid_url(full_url, base_domain) and "/wiki/Machine_learning" in full_url:
                 links.add(full_url)
             if len(links) >= max_links:

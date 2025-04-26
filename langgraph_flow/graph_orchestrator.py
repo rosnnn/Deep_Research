@@ -1,17 +1,13 @@
-# langgraph_flow/graph_orchestrator.py
-
 from langgraph.graph import StateGraph
 from agents.research_agent import ResearchAgent
 from agents.answer_agent import AnswerAgent
 from typing import Dict, List, Any, TypedDict
 
-# ✅ Define the state properly using TypedDict
 class GraphState(TypedDict):
-    research_data: List[Dict[str, str]]  # List of dicts with 'url' and 'text'
+    research_data: List[Dict[str, str]] 
     answer: str
 
 def build_graph(question: str):
-    # Initialize the researcher with the question
     researcher = ResearchAgent(query=question, max_results=3)
     
     # Node 1: Collect information
@@ -27,7 +23,6 @@ def build_graph(question: str):
         response = answerer.draft_answer(context, question)
         return {"answer": response, **state}
 
-    # ✅ Build the graph with the correct schema
     builder = StateGraph(GraphState)
     builder.add_node("Collect", collect)
     builder.add_node("Draft", draft)

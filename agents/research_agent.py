@@ -3,7 +3,6 @@ from tavily import TavilyClient
 from dotenv import load_dotenv
 import os
 
-# Load environment variables from .env file
 load_dotenv()
 
 class ResearchAgent:
@@ -20,24 +19,20 @@ class ResearchAgent:
     def gather_information(self):
         print(f"\n[🔎] ResearchAgent: Searching for '{self.query}' using Tavily API...")
         try:
-            # Perform the search using Tavily API
             response = self.client.search(
                 query=self.query,
                 max_results=self.max_results,
                 search_depth="basic"
             )
             
-            # Extract results
             results = response.get("results", [])
             for result in results:
                 url = result.get("url", "No URL")
                 content = result.get("content", "")
                 
                 if content:
-                    # Clean and ensure complete content
                     cleaned_content = self.clean_content(content)
 
-                    # Append the cleaned content if it is valid
                     if cleaned_content:
                         self.collected_texts.append({
                             "url": url,
@@ -52,16 +47,13 @@ class ResearchAgent:
             return []
 
     def clean_content(self, content):
-        # Apply a regex to ensure full sentences are captured
-        sentences = re.split(r'(?<=\.)\s+', content)  # Split content into sentences by periods.
+        sentences = re.split(r'(?<=\.)\s+', content)  
         cleaned_content = " ".join(sentences).strip()
         
-        # If content length exceeds threshold, truncate it gracefully at the last full sentence
         if len(cleaned_content) > 16000:
             cleaned_content = cleaned_content[:16000]
 
-        # If content seems too short or fragmented, discard it
-        if len(cleaned_content) < 50:  # Set a threshold to ignore fragments
+        if len(cleaned_content) < 50: 
             return None
         
         return cleaned_content
